@@ -1,11 +1,16 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StatusBar } from "expo-status-bar";
+import { StyleSheet, Text, View } from "react-native";
+import { RegistrationScreen } from "./Screens/RegistrationScreen/RegistrationScreen";
+import { LoginScreen } from "./Screens/LoginScreen/LoginScreen";
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+      <View style={styles.emptySpace}></View>
+      <View>
+        <LoginScreen />
+        {/* <RegistrationScreen /> */}
+      </View>
     </View>
   );
 }
@@ -13,8 +18,11 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  emptySpace: {
+    flex: 1, // Встановлюємо flex для вільного місця зверху на 1
   },
 });
