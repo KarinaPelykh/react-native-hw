@@ -2,49 +2,56 @@ import {
   View,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
-  Image,
+  TextInput,
+  Dimensions,
+  ImageBackground,
 } from "react-native";
+import background from "../../images/background.jpg";
+const screenSize = Dimensions.get("screen");
 export const LoginScreen = () => {
   return (
-    <View style={styles.containerLog}>
-      <Text style={styles.textLog}>Увійти</Text>
+    <ImageBackground style={styles.background} source={background}>
+      <View style={styles.containerLog}>
+        <Text style={styles.textLog}>Увійти</Text>
 
-      <TextInput
-        type="text"
-        style={styles.inputText}
-        placeholder="Адреса електронної пошти"
-      />
-      <TextInput
-        type="text"
-        style={styles.lastInputText}
-        placeholder="Пароль"
-      />
-      <TouchableOpacity style={styles.button}>
-        <Text style={styles.buttonText}>Увійти</Text>
-      </TouchableOpacity>
-      <Text style={styles.textLink}>Немає акаунту? Зареєструватися</Text>
-
-      <View style={styles.homeIndicatr}>
-        <View style={styles.indicator}></View>
+        <TextInput
+          type="text"
+          style={styles.inputText}
+          placeholder="Адреса електронної пошти"
+        />
+        <TextInput
+          type="text"
+          style={styles.lastInputText}
+          placeholder="Пароль"
+        />
+        <TouchableOpacity style={styles.button}>
+          <Text style={styles.buttonText}>Увійти</Text>
+        </TouchableOpacity>
+        <Text style={styles.text}>
+          Немає акаунту? <Text style={styles.textLink}>Зареєструватися</Text>
+        </Text>
+        {/* <View style={styles.homeIndicatr}>
+          <View style={styles.indicator}></View>
+        </View> */}
       </View>
-    </View>
+    </ImageBackground>
   );
 };
 const styles = StyleSheet.create({
   containerLog: {
     position: "relative",
-    width: 375,
+    width: screenSize.width,
+    height: screenSize.height,
     paddingLeft: 16,
     paddingRight: 16,
     alignItems: "center",
-    justifyContent: "center",
     borderColor: "#000",
     borderWidth: 1,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    marginTop: 0,
+    marginTop: 320,
+    backgroundColor: "#fff",
   },
   textLog: {
     marginTop: 32,
@@ -87,24 +94,35 @@ const styles = StyleSheet.create({
     backgroundColor: "#F6F6F6",
     borderWidth: 1,
   },
-  textLink: {
+  text: {
     color: "#1B4371",
-    marginBottom: 45,
+    marginBottom: 111,
     fontSize: 16,
   },
-  homeIndicatr: {
-    width: 375,
-    height: 34,
-    paddingRight: 120,
-    paddingLeft: 120,
-    paddingTop: 21,
-    margin: 0,
+  textLink: {
+    textDecorationLine: "underline",
+    color: "#1B4371",
+    marginBottom: 111,
+    fontSize: 16,
   },
-  indicator: {
-    width: 134,
-    height: 5,
-    backgroundColor: "#212121",
-    borderRadius: 10,
-    margin: 0,
+  // homeIndicatr: {
+  //   width: 375,
+  //   height: 34,
+  //   paddingRight: 120,
+  //   paddingLeft: 120,
+  //   paddingTop: 21,
+  //   margin: 0,
+  // },
+  // indicator: {
+  //   width: 134,
+  //   height: 5,
+  //   backgroundColor: "#212121",
+  //   borderRadius: 10,
+  //   margin: 0,
+  // },
+  background: {
+    flex: 1,
+    width: screenSize.width,
+    height: screenSize.height,
   },
 });

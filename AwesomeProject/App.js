@@ -8,7 +8,7 @@ export default function App() {
     <View style={styles.container}>
       <View style={styles.emptySpace}></View>
       <View>
-        <LoginScreen />
+        {/* <LoginScreen /> */}
         {/* <RegistrationScreen /> */}
       </View>
     </View>
@@ -23,6 +23,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   emptySpace: {
-    flex: 1, // Встановлюємо flex для вільного місця зверху на 1
+    flex: 1,
   },
 });
