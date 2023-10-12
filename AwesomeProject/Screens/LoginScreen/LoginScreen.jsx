@@ -6,52 +6,98 @@ import {
   TextInput,
   Dimensions,
   ImageBackground,
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Keyboard,
+  Platform,
 } from "react-native";
 import background from "../../images/background.jpg";
+import { useState } from "react";
 const screenSize = Dimensions.get("screen");
 export const LoginScreen = () => {
-  return (
-    <ImageBackground style={styles.background} source={background}>
-      <View style={styles.containerLog}>
-        <Text style={styles.textLog}>Увійти</Text>
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const hendelLogin = () => {
+    console.log({ email: email, password: password });
+    setEmail("");
+    setPassword("");
+  };
 
-        <TextInput
-          type="text"
-          style={styles.inputText}
-          placeholder="Адреса електронної пошти"
-        />
-        <TextInput
-          type="text"
-          style={styles.lastInputText}
-          placeholder="Пароль"
-        />
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Увійти</Text>
-        </TouchableOpacity>
-        <Text style={styles.text}>
-          Немає акаунту? <Text style={styles.textLink}>Зареєструватися</Text>
-        </Text>
-        {/* <View style={styles.homeIndicatr}>
-          <View style={styles.indicator}></View>
-        </View> */}
-      </View>
+  return (
+    //   <View style={styles.container}>
+    <ImageBackground style={styles.background} source={background}>
+      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{ flex: 1, alignItems: "center" }}
+        >
+          <View style={styles.containerLog}>
+            <View style={styles.form}>
+              <Text style={styles.textLog}>Увійти</Text>
+
+              <TextInput
+                style={styles.inputText}
+                placeholder="Адреса електронної пошти"
+                value={email}
+                onChangeText={setEmail}
+              />
+              <TextInput
+                style={styles.lastInputText}
+                placeholder="Пароль"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={true}
+              />
+              <TouchableOpacity style={styles.button} onPress={hendelLogin}>
+                <Text style={styles.buttonText}>Увійти</Text>
+              </TouchableOpacity>
+              <Text style={styles.text}>
+                Немає акаунту?
+                <Text style={styles.textLink}>Зареєструватися</Text>
+              </Text>
+            </View>
+          </View>
+        </KeyboardAvoidingView>
+      </TouchableWithoutFeedback>
     </ImageBackground>
+    // </View>
   );
 };
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
   containerLog: {
-    position: "relative",
+    // position: "relative",
+    // width: screenSize.width,
+    // height: screenSize.height,
+    // paddingLeft: 16,
+    // paddingRight: 16,
+    // alignItems: "center",
+    // borderColor: "#000",
+    // borderWidth: 1,
+    // borderTopLeftRadius: 25,
+    // borderTopRightRadius: 25,
+    // marginTop: 320,
+    // backgroundColor: "#fff",
+    flex: 1,
+    justifyContent: "flex-end",
+  },
+  form: {
     width: screenSize.width,
-    height: screenSize.height,
     paddingLeft: 16,
     paddingRight: 16,
+
     alignItems: "center",
-    borderColor: "#000",
-    borderWidth: 1,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    marginTop: 320,
     backgroundColor: "#fff",
+    alignItems: "center",
+  },
+  background: {
+    flex: 1,
+    width: screenSize.width,
+    height: screenSize.height,
   },
   textLog: {
     marginTop: 32,
@@ -59,7 +105,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   button: {
-    width: 343,
+    width: " 100%",
     height: 51,
     borderRadius: 100,
     paddingTop: 16,
@@ -78,7 +124,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 16,
     marginBottom: 16,
-    width: 343,
+
+    width: "100%",
     height: 50,
     borderColor: "#E8E8E8",
     backgroundColor: "#F6F6F6",
@@ -88,7 +135,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 16,
     marginBottom: 43,
-    width: 343,
+    width: "100%",
     height: 50,
     borderColor: "#E8E8E8",
     backgroundColor: "#F6F6F6",
@@ -96,7 +143,7 @@ const styles = StyleSheet.create({
   },
   text: {
     color: "#1B4371",
-    marginBottom: 111,
+    marginBottom: 70,
     fontSize: 16,
   },
   textLink: {
@@ -104,25 +151,5 @@ const styles = StyleSheet.create({
     color: "#1B4371",
     marginBottom: 111,
     fontSize: 16,
-  },
-  // homeIndicatr: {
-  //   width: 375,
-  //   height: 34,
-  //   paddingRight: 120,
-  //   paddingLeft: 120,
-  //   paddingTop: 21,
-  //   margin: 0,
-  // },
-  // indicator: {
-  //   width: 134,
-  //   height: 5,
-  //   backgroundColor: "#212121",
-  //   borderRadius: 10,
-  //   margin: 0,
-  // },
-  background: {
-    flex: 1,
-    width: screenSize.width,
-    height: screenSize.height,
   },
 });

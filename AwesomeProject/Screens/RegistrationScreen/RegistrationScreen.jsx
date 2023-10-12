@@ -7,63 +7,119 @@ import {
   ImageBackground,
   Dimensions,
   Image,
+  KeyboardAvoidingView,
+  Platform,
+  TouchableWithoutFeedback,
+  Keyboard,
+  Alert,
 } from "react-native";
-import backgroundFoto from "../../images/background.jpg";
 import { AntDesign } from "@expo/vector-icons";
+import { useState } from "react";
+
 const screenSize = Dimensions.get("screen");
 
 export const RegistrationScreen = () => {
+  const [login, setLogin] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const handelRegister = () => {
+    Alert.alert("Credentials", `${login} + ${email}`);
+    console.log({ login: login, email: email, password: password });
+    setLogin("");
+    setEmail("");
+    setPassword("");
+  };
+
   return (
-    <ImageBackground style={styles.backgroundFoto} source={backgroundFoto}>
-      <View style={styles.containerRegist}>
-        <View style={styles.contaddfoto}>
-          <Image style={styles.avatarFoto} />
-          <TouchableOpacity style={styles.buttonOpen}>
-            <AntDesign
-              name="pluscircleo"
-              size={25}
-              color="#FF6C00"
-              style={styles.buttonAdd}
-            />
-          </TouchableOpacity>
-        </View>
-        <Text style={styles.textRegist}>Реєстрація</Text>
-        <TextInput type="text" style={styles.inputText} placeholder="Логін" />
-        <TextInput
-          type="text"
-          style={styles.inputText}
-          placeholder="Адреса електронної пошти"
-        />
-        <TextInput
-          type="text"
-          style={styles.lastInputText}
-          placeholder="Пароль"
-        />
-        <TouchableOpacity style={styles.button}>
-          <Text style={styles.buttonText}>Зареєструватися</Text>
-        </TouchableOpacity>
-        <Text style={styles.textLink}>Вже є акаунт? Увійти</Text>
-        {/* <View style={styles.homeIndicatr}>
-          <View style={styles.indicator}></View>
-        </View> */}
-      </View>
+    // <View style={styles.container}>
+    <ImageBackground
+      style={styles.backgroundFoto}
+      source={require("../../images/background.jpg")}
+    >
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1, alignItems: "center" }}
+      >
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          <View style={styles.containerRegist}>
+            <View style={styles.form}>
+              <View style={styles.contaddfoto}>
+                <Image style={styles.avatarFoto} />
+                <TouchableOpacity style={styles.buttonOpen}>
+                  <AntDesign
+                    name="pluscircleo"
+                    size={25}
+                    color="#FF6C00"
+                    style={styles.buttonAdd}
+                  />
+                </TouchableOpacity>
+              </View>
+              <Text style={styles.textRegist}>Реєстрація</Text>
+
+              <TextInput
+                style={styles.inputText}
+                placeholder="Логін"
+                value={login}
+                onChangeText={setLogin}
+              />
+              <TextInput
+                style={styles.inputText}
+                placeholder="Адреса електронної пошти"
+                value={email}
+                onChangeText={setEmail}
+              />
+              <TextInput
+                style={styles.lastInputText}
+                placeholder="Пароль"
+                secureTextEntry={true}
+                value={password}
+                onChangeText={setPassword}
+              />
+
+              <TouchableOpacity style={styles.button} onPress={handelRegister}>
+                <Text style={styles.buttonText}>Зареєструватися</Text>
+              </TouchableOpacity>
+              <Text style={styles.textLink}>Вже є акаунт? Увійти</Text>
+            </View>
+          </View>
+        </TouchableWithoutFeedback>
+      </KeyboardAvoidingView>
     </ImageBackground>
+    // </View>
   );
 };
 
 const styles = StyleSheet.create({
-  containerRegist: {
-    position: "relative",
+  container: {
+    flex: 1,
+  },
+  backgroundFoto: {
     height: screenSize.height,
+    width: screenSize.width,
+    flex: 1,
+  },
+  containerRegist: {
+    // width: screenSize.width,
+    // paddingLeft: 16,
+    // paddingRight: 16,
+    // alignItems: "center",
+    // borderWidth: 1,
+    // borderTopLeftRadius: 25,
+    // borderTopRightRadius: 25,
+    // marginTop: 279,
+    // backgroundColor: "#fff",
+    flex: 1,
+    justifyContent: "flex-end",
+  },
+  form: {
     width: screenSize.width,
     paddingLeft: 16,
     paddingRight: 16,
     alignItems: "center",
-    borderWidth: 1,
     borderTopLeftRadius: 25,
     borderTopRightRadius: 25,
-    marginTop: 270,
     backgroundColor: "#fff",
+    alignItems: "center",
   },
   textRegist: {
     marginTop: 70,
@@ -71,7 +127,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
   },
   button: {
-    width: 343,
+    width: "100%",
     height: 51,
     borderRadius: 100,
     paddingTop: 16,
@@ -86,11 +142,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 16,
   },
+
   inputText: {
     borderRadius: 10,
     padding: 16,
     marginBottom: 16,
-    width: 343,
+    // width: 343,
+    width: "100%",
     height: 50,
     borderColor: "#E8E8E8",
     backgroundColor: "#F6F6F6",
@@ -100,7 +158,8 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 16,
     marginBottom: 43,
-    width: 343,
+    // width: 343,
+    width: "100%",
     height: 50,
     borderColor: "#E8E8E8",
     backgroundColor: "#F6F6F6",
@@ -108,24 +167,10 @@ const styles = StyleSheet.create({
   },
   textLink: {
     color: "#1B4371",
-    marginBottom: 45,
+    // marginBottom: 45,
     fontSize: 16,
   },
-  // homeIndicatr: {
-  //   width: 375,
-  //   height: 34,
-  //   paddingRight: 120,
-  //   paddingLeft: 120,
-  //   paddingTop: 21,
-  //   margin: 0,
-  // },
-  // indicator: {
-  //   width: 134,
-  //   height: 5,
-  //   backgroundColor: "#212121",
-  //   borderRadius: 10,
-  //   margin: 0,
-  // },
+
   contaddfoto: {
     width: 132,
     height: 120,
@@ -137,16 +182,11 @@ const styles = StyleSheet.create({
 
     position: "absolute",
     top: -65,
-    left: 120,
+    left: 110,
   },
   avatarFoto: {
     width: 132,
     height: 120,
-  },
-  backgroundFoto: {
-    height: screenSize.height,
-    width: screenSize.width,
-    flex: 1,
   },
 
   buttonOpen: {
