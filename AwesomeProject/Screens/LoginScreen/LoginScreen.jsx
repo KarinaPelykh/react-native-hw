@@ -212,8 +212,8 @@ export const LoginScreen = ({ navigation }) => {
   const [password, setPassword] = useState("");
   const hendelLogin = () => {
     // Alert.alert("Credentials", `${login} + ${email}`);
-    console.log({ email: email, password: password });
-
+    console.log({ login: login, email: email, password: password });
+    setLogin("");
     setEmail("");
     setPassword("");
   };
@@ -250,15 +250,17 @@ export const LoginScreen = ({ navigation }) => {
           </View>
           <TouchableOpacity
             style={styles.button}
-            onPress={hendelLogin}
-            // onPress={() => navigation.navigate("Home")}
+            onPress={() => {
+              hendelLogin();
+              navigation.navigate("Home", { email, login });
+            }}
           >
             <Text style={styles.buttonText}>Увійти</Text>
           </TouchableOpacity>
           <Text style={styles.textLink}>
             Немає акаунту?
             <Text
-              style={styles.textLink}
+              style={styles.Link}
               onPress={() => navigation.navigate("Registration")}
             >
               Зареєструватися
@@ -331,9 +333,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: 16,
   },
-  textLink: {
+  text: {
     color: "#1B4371",
     fontSize: 16,
+  },
+  Link: {
+    color: "#1B4371",
+    fontSize: 16,
+    textDecorationLine: "underline",
   },
   contaddfoto: {
     width: 132,

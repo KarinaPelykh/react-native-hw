@@ -220,7 +220,6 @@ import {
   ScrollView,
   Dimensions,
   Animated,
-  Alert,
 } from "react-native";
 
 export const RegistrationScreen = ({ navigation }) => {
@@ -252,13 +251,14 @@ export const RegistrationScreen = ({ navigation }) => {
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const handelRegister = () => {
-    Alert.alert("Credentials", `${login} + ${email}`);
     console.log({ login: login, email: email, password: password });
     setLogin("");
     setEmail("");
     setPassword("");
   };
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
@@ -275,7 +275,12 @@ export const RegistrationScreen = ({ navigation }) => {
           style={[styles.formWrapper, { paddingBottom: position }]}
         >
           <View style={styles.contaddfoto}>
-            <Image style={styles.avatar} />
+            <Image
+              source={{
+                uri: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8dXNlcnxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=500&q=60",
+              }}
+              style={styles.avatar}
+            />
             <TouchableOpacity style={styles.buttonOpen}>
               <AntDesign
                 name="pluscircleo"
@@ -309,7 +314,13 @@ export const RegistrationScreen = ({ navigation }) => {
             />
           </View>
 
-          <TouchableOpacity style={styles.button} onPress={handelRegister}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => {
+              handelRegister();
+              navigation.navigate("Home", { login, email });
+            }}
+          >
             <Text style={styles.buttonText}>Зареєструватися</Text>
           </TouchableOpacity>
           <Text style={styles.textLink}>
@@ -341,7 +352,11 @@ const styles = StyleSheet.create({
   },
   avatar: {
     position: "absolute",
-    top: -55,
+    top: -1,
+    left: -1,
+    width: 132,
+    height: 120,
+    borderRadius: 15,
   },
   title: { fontSize: 30, fontWeight: "bold", marginBottom: 20 },
   inputsContainer: { gap: 10, width: "100%", padding: 16, marginBottom: 30 },
@@ -409,7 +424,7 @@ const styles = StyleSheet.create({
   },
   buttonAdd: {
     position: "absolute",
-    top: 75,
+    top: 70,
     left: 120,
   },
 });
