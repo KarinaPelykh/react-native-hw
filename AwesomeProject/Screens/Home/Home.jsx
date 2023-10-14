@@ -1,10 +1,12 @@
-import { Dimensions, StyleSheet, View } from "react-native";
+import { Dimensions, StyleSheet, TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Ionicons } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import { PostsScreen } from "../PostsScreen/PostsScreen";
 import { CreatePostsScreen } from "../CreatePostsScreen/CreatePostsScreen";
 import { ProfileScreen } from "../ProfileScreen/ProfileScreen";
 import { useRoute } from "@react-navigation/native";
+import { MaterialIcons } from "@expo/vector-icons";
 const Tabs = createBottomTabNavigator();
 
 export const Home = () => {
@@ -54,16 +56,58 @@ export const Home = () => {
         name="PostsScreen"
         component={PostsScreen}
         initialParams={{ login, email }}
-        options={{ tabBarLabel: "", headerShown: false }}
+        options={({ navigation }) => ({
+          tabBarLabel: "",
+          title: "Публікації ",
+          headerLeft: null,
+          headerStyle: {
+            backgroundColor: "#fff",
+            borderBottomWidth: 1,
+          },
+          headerTintColor: "#212121",
+          headerTitleStyle: {
+            fontWeight: "bold",
+            fontSize: 17,
+          },
+          headerTitleAlign: "center",
+          headerRight: () => (
+            <TouchableOpacity
+              style={{ width: 24, height: 24, marginRight: 16 }}
+              onPress={() => {
+                navigation.navigate("Registration");
+              }}
+            >
+              <MaterialIcons name="logout" size={24} color="gray" />
+            </TouchableOpacity>
+          ),
+        })}
       />
       <Tabs.Screen
         name="CreatePostsScreen"
-        options={{ tabBarLabel: "", headerShown: false }}
+        options={({ navigation }) => ({
+          tabBarLabel: "",
+          title: "Створити публікацію ",
+          headerStyle: {
+            borderBottomWidth: 1,
+          },
+          headerTintColor: "#212121",
+          headerTitleStyle: {
+            fontSize: 17,
+            fontWeight: "bold",
+          },
+          headerTitleAlign: "center",
+          headerLeft: () => (
+            <TouchableOpacity style={{ width: 24, height: 24, marginLeft: 16 }}>
+              <AntDesign name="arrowleft" size={24} color="black" />
+            </TouchableOpacity>
+          ),
+        })}
         component={CreatePostsScreen}
       />
 
       <Tabs.Screen
         name="ProfileScreen"
+        initialParams={{ login }}
         options={{ tabBarLabel: "", headerShown: false }}
         component={ProfileScreen}
       />
