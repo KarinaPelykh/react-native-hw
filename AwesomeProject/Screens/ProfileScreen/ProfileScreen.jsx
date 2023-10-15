@@ -69,10 +69,6 @@ const styles = StyleSheet.create({
   avatar: {
     position: "absolute",
     top: -55,
-    avatarFoto: {
-      width: 132,
-      height: 120,
-    },
   },
 
   formWrapper: {

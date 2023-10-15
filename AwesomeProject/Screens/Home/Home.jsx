@@ -42,15 +42,15 @@ export const Home = () => {
           padding: 9,
         },
       })}
-      tabBarOptions={{
-        activeTintColor: "white",
-        activeBackgroundColor: "tomato",
-        inactiveTintColor: "black",
-        tabStyle: {
-          borderRadius: 100,
-          height: 50,
-        },
-      }}
+      // tabBarOptions={{
+      //   activeTintColor: "white",
+      //   activeBackgroundColor: "tomato",
+      //   inactiveTintColor: "black",
+      //   tabStyle: {
+      //     borderRadius: 100,
+      //     height: 50,
+      //   },
+      // }}
     >
       <Tabs.Screen
         name="PostsScreen"
@@ -97,7 +97,12 @@ export const Home = () => {
           },
           headerTitleAlign: "center",
           headerLeft: () => (
-            <TouchableOpacity style={{ width: 24, height: 24, marginLeft: 16 }}>
+            <TouchableOpacity
+              style={{ width: 24, height: 24, marginLeft: 16 }}
+              onPress={() => {
+                navigation.navigate("PostsScreen");
+              }}
+            >
               <AntDesign name="arrowleft" size={24} color="black" />
             </TouchableOpacity>
           ),
