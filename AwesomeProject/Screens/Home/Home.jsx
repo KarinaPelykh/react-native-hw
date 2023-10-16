@@ -38,9 +38,14 @@ export const Home = () => {
 
         tabBarStyle: {
           width: screenSize.width,
-          height: 83,
+          height: 60,
           padding: 9,
         },
+        tabBarLabelStyle: {},
+        tabBarActiveTintColor: "white",
+        tabBarActiveBackgroundColor: "tomato",
+        tabBarInactiveTintColor: "gray",
+        tabBarHideOnKeyboard: "true ",
       })}
     >
       <Tabs.Screen

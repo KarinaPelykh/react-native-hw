@@ -15,13 +15,15 @@ export const PostsScreen = ({ route, navigation }) => {
   const { login, email } = route.params;
   console.log(route.params);
   useEffect(() => {
-    setPost((prevState) => [...prevState, route.params]);
+    if (route.params) {
+      setPost((prevState) => [...prevState, route.params]);
+    }
   }, [route.params]);
   console.log("post---->", post);
   console.log("route.params---->", route.params);
   return (
     <View style={styles.container}>
-      <View style={{ flexDirection: "row", marginTop: 32 }}>
+      <View style={{ flexDirection: "row", marginTop: 32, marginBottom: 32 }}>
         <View
           style={{
             width: 60,
@@ -55,7 +57,7 @@ export const PostsScreen = ({ route, navigation }) => {
             {item.takeFoto && (
               <Image
                 source={{ uri: item.takeFoto }}
-                style={{ height: 240, width: 343 }}
+                style={{ height: 240, borderRadius: 10 }}
               />
             )}
             {item.name && (
@@ -76,6 +78,7 @@ export const PostsScreen = ({ route, navigation }) => {
                   flexDirection: "row",
                   alignItems: "flex-end",
                   justifyContent: "flex-end",
+                  marginBottom: 23,
                 }}
               >
                 <TouchableOpacity
