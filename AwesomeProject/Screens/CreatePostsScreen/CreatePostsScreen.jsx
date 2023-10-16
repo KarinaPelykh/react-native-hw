@@ -13,32 +13,58 @@ import { Camera } from "expo-camera";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useEffect, useState } from "react";
 import * as MediaLibrary from "expo-media-library";
+import * as Location from "expo-location";
 export const CreatePostsScreen = ({ navigation }) => {
   const [foto, setFoto] = useState(null);
   const [takeFoto, setTakeFoto] = useState(null);
   const [hasPermission, setHasPermission] = useState(null);
   const [name, setName] = useState("");
   const [lokation, setLokation] = useState("");
+  const [location, setLocation] = useState(null);
+  console.log("location", location);
+  // useEffect(() => {
+  //   (async () => {
+  //     const { status } = await Camera.requestCameraPermissionsAsync();
+  //     await MediaLibrary.requestPermissionsAsync();
+
+  //     setHasPermission(status === "granted");
+  //   })();
+  // }, []);
+
+  // if (hasPermission === null) {
+  //   return <View />;
+  // }
+  // if (hasPermission === false) {
+  //   return <Text>No access to camera</Text>;
+  // }
 
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
       await MediaLibrary.requestPermissionsAsync();
-
       setHasPermission(status === "granted");
     })();
-  }, []);
 
-  if (hasPermission === null) {
-    return <View />;
-  }
-  if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
-  }
+    (async () => {
+      let { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== "granted") {
+        console.log("Permission to access location was denied");
+      } else {
+        let location = await Location.getCurrentPositionAsync({});
+        const coords = {
+          latitude: location.coords.latitude,
+          longitude: location.coords.longitude,
+        };
+        setLocation(coords);
+      }
+    })();
+  }, []);
 
   const Photo = async () => {
     if (foto) {
       const camera = await foto.takePictureAsync();
+      const location = await Location.getCurrentPositionAsync();
+      console.log("locatton", location);
       const cameraFoto = camera.uri;
       setTakeFoto(cameraFoto);
       await MediaLibrary.createAssetAsync(cameraFoto);
@@ -164,11 +190,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     left: 0,
-    borderColor: "red",
+
     borderWidth: 2,
     height: 240,
     width: 330,
-    borderRadius: 10,
-    borderWidth: 1,
   },
 });

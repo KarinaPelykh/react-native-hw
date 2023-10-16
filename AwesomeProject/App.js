@@ -6,7 +6,8 @@ import { RegistrationScreen } from "./Screens/RegistrationScreen/RegistrationScr
 import { LoginScreen } from "./Screens/LoginScreen/LoginScreen";
 import { createStackNavigator, Screen } from "@react-navigation/stack";
 import { Home } from "./Screens/Home/Home";
-// import { TouchableOpacity } from "react-native";
+import { MapScreen } from "./Screens/MapScreen/MapScreen";
+import { CommentsScreen } from "./Screens/CommentsScreen/CommentsScreen";
 
 const MainStack = createStackNavigator();
 export default function App() {
@@ -52,6 +53,43 @@ export default function App() {
           //     </TouchableOpacity>
           //   ),
           // })}
+        />
+        <MainStack.Screen
+          name="MapScreen"
+          component={MapScreen}
+          options={({ navigation }) => ({
+            title: "Мапа ",
+
+            headerStyle: {
+              backgroundColor: "#fff",
+              borderBottomWidth: 1,
+            },
+            headerTintColor: "#212121",
+            headerTitleStyle: {
+              fontWeight: "bold",
+              fontSize: 20,
+            },
+            headerTitleAlign: "center",
+          })}
+        />
+
+        <MainStack.Screen
+          name="CommentsScreen"
+          options={({ navigation }) => ({
+            title: "Коментарі ",
+
+            headerStyle: {
+              backgroundColor: "#fff",
+              borderBottomWidth: 1,
+            },
+            headerTintColor: "#212121",
+            headerTitleStyle: {
+              fontWeight: "bold",
+              fontSize: 20,
+            },
+            headerTitleAlign: "center",
+          })}
+          component={CommentsScreen}
         />
       </MainStack.Navigator>
     </NavigationContainer>

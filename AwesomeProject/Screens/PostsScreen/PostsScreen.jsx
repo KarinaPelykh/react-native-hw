@@ -7,11 +7,12 @@ import {
   Dimensions,
   FlatList,
 } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { EvilIcons } from "@expo/vector-icons";
 
-export const PostsScreen = ({ route }) => {
+export const PostsScreen = ({ route, navigation }) => {
   const [post, setPost] = useState([]);
-
-  // const { login, email } = route.params;
+  const { login, email } = route.params;
   console.log(route.params);
   useEffect(() => {
     setPost((prevState) => [...prevState, route.params]);
@@ -39,22 +40,72 @@ export const PostsScreen = ({ route }) => {
         <View
           style={{ flexDirection: "column", justifyContent: "center", flex: 1 }}
         >
-          {/* <Text style={{ fontSize: 17, fontWeight: 700 }}>{login}</Text>
+          <Text style={{ fontSize: 17, fontWeight: 700 }}>{login}</Text>
           <Text style={{ fontSize: 11, fontWeight: 400, color: "#212121CC" }}>
             {email}
-          </Text> */}
+          </Text>
         </View>
       </View>
+
       <FlatList
         data={post}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item }) => (
           <View>
-            <Image source={{ uri: item.takeFoto }} style={{ height: 240 }} />
-            <Text style={{ fontSize: 17, fontWeight: 700 }}>{item.name}</Text>
-            <Text style={{ fontSize: 11, fontWeight: 400, color: "#212121CC" }}>
-              {item.lokation}
-            </Text>
+            {item.takeFoto && (
+              <Image
+                source={{ uri: item.takeFoto }}
+                style={{ height: 240, width: 343 }}
+              />
+            )}
+            {item.name && (
+              <Text
+                style={{
+                  fontSize: 17,
+                  fontWeight: 700,
+                  width: 200,
+                  height: 30,
+                }}
+              >
+                {item.name}
+              </Text>
+            )}
+            {item.lokation && (
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "flex-end",
+                  justifyContent: "flex-end",
+                }}
+              >
+                <TouchableOpacity
+                  style={{ marginRight: 235 }}
+                  onPress={() => {
+                    navigation.navigate("CommentsScreen");
+                  }}
+                >
+                  <EvilIcons name="comment" size={24} color="gray" />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("MapScreen");
+                  }}
+                >
+                  <EvilIcons name="location" size={24} color="gray" />
+                </TouchableOpacity>
+                <Text
+                  style={{
+                    fontSize: 11,
+                    fontWeight: 400,
+                    color: "#212121CC",
+                    alignItems: "flex-end",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  {item.lokation}
+                </Text>
+              </View>
+            )}
           </View>
         )}
       />

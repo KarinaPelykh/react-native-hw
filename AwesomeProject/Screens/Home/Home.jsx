@@ -42,15 +42,6 @@ export const Home = () => {
           padding: 9,
         },
       })}
-      // tabBarOptions={{
-      //   activeTintColor: "white",
-      //   activeBackgroundColor: "tomato",
-      //   inactiveTintColor: "black",
-      //   tabStyle: {
-      //     borderRadius: 100,
-      //     height: 50,
-      //   },
-      // }}
     >
       <Tabs.Screen
         name="PostsScreen"
