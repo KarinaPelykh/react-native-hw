@@ -9,10 +9,14 @@ import {
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { EvilIcons } from "@expo/vector-icons";
+import { useSelector } from "react-redux";
+import { selectorLogin } from "../../redux/auth/authSelector";
 
 export const PostsScreen = ({ route, navigation }) => {
+  const loginUser = useSelector(selectorLogin);
+  console.log("loginUser--->", loginUser.login);
   const [post, setPost] = useState([]);
-  const { login, email } = route.params;
+  const { email } = route.params;
   // console.log(route.params);
   useEffect(() => {
     if (route.params) {
@@ -42,7 +46,9 @@ export const PostsScreen = ({ route, navigation }) => {
         <View
           style={{ flexDirection: "column", justifyContent: "center", flex: 1 }}
         >
-          <Text style={{ fontSize: 17, fontWeight: 700 }}>{login}</Text>
+          <Text style={{ fontSize: 17, fontWeight: 700 }}>
+            {loginUser.login}
+          </Text>
           <Text style={{ fontSize: 11, fontWeight: 400, color: "#212121CC" }}>
             {email}
           </Text>

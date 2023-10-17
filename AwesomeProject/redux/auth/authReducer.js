@@ -12,22 +12,19 @@ export const authSlice = createSlice({
   },
   extraReducers: (bulder) => {
     bulder
-      .addCase(authRegisters.fulfilled, (action, state) => {
-        state.user = action.payload.user;
+      .addCase(authRegisters.fulfilled, (state, { payload }) => {
+        state.user = payload.user;
       })
-      .addCase(authLogin.fulfilled, (action, state) => {
-        state.user = action.payload.user;
+      .addCase(authLogin.fulfilled, ({ payload }, state) => {
+        state.user = payload.user;
       })
-      .addCase(authRegisters.rejected, (state, action) => {
-        // Обробка помилки authRegisters
-        // Наприклад, можна встановити стан помилки або вивести її в консоль
+      .addCase(authRegisters.rejected, (action) => {
         console.error("authRegisters failed:", action.error);
       })
-      .addCase(authLogin.rejected, (state, action) => {
-        // Обробка помилки authLogin
-        // Наприклад, можна встановити стан помилки або вивести її в консоль
+      .addCase(authLogin.rejected, (action) => {
         console.error("authLogin failed:", action.error);
       });
   },
 });
+
 export const authReducer = authSlice.reducer;

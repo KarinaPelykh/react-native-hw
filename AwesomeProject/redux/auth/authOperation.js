@@ -12,11 +12,20 @@ export const authRegisters = createAsyncThunk(
     try {
       const users = await createUserWithEmailAndPassword(auth, email, password);
       const user = auth.currentUser;
-      console.log(users);
+
       await updateProfile(user, {
         displayName: login,
       });
-      return users;
+
+      const data = {
+        user: {
+          login: user.displayName,
+          email: user.email,
+          id: user.uid,
+        },
+      };
+      console.log(data);
+      return data;
     } catch (error) {
       return rejectWithValue(error.message);
     }
@@ -33,8 +42,16 @@ export const authLogin = createAsyncThunk(
         password
       );
 
+      const user = userCredential.user;
+      const data = {
+        user: {
+          login: user.displayName,
+          email: user.email,
+          id: user.uid,
+        },
+      };
       console.log("userCredential--->", userCredential);
-      return userCredential; // Return the logged-in user
+      return data;
     } catch (error) {
       return rejectWithValue(error.message);
     }

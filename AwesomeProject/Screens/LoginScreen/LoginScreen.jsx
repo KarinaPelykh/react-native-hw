@@ -44,12 +44,13 @@ export const LoginScreen = ({ navigation }) => {
   // const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(true);
   const dispatch = useDispatch();
 
   const hendelLogin = () => {
     const login = { email, password };
     dispatch(authLogin(login));
-    console.log({ email: email, password: password });
+    // console.log({ email: email, password: password });
     setEmail("");
     setPassword("");
   };
@@ -77,19 +78,33 @@ export const LoginScreen = ({ navigation }) => {
               value={email}
               onChangeText={setEmail}
             />
-            <TextInput
-              style={styles.input}
-              placeholder="Пароль"
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry={true}
-            />
+
+            <View style={{ position: "relative" }}>
+              <TextInput
+                style={styles.input}
+                placeholder="Пароль"
+                value={password}
+                onChangeText={setPassword}
+                secureTextEntry={showPassword}
+              />
+
+              <TouchableOpacity
+                style={{ position: "absolute", top: 15, left: 240 }}
+                onPress={() => {
+                  setShowPassword(!showPassword);
+                }}
+              >
+                <Text style={{ color: "#1B4371", fontSize: 16 }}>
+                  {showPassword ? "Показати" : "Сховати"}
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
           <TouchableOpacity
             style={styles.button}
             onPress={() => {
               hendelLogin();
-              // navigation.navigate("Home", { email, login });
+              navigation.navigate("Home", { email });
             }}
           >
             <Text style={styles.buttonText}>Увійти</Text>
