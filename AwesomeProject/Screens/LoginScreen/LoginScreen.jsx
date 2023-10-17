@@ -1,6 +1,4 @@
-
-
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -13,8 +11,9 @@ import {
   ScrollView,
   Dimensions,
   Animated,
-
 } from "react-native";
+import { useDispatch } from "react-redux";
+import { authLogin } from "../../redux/auth/authOperation";
 
 export const LoginScreen = ({ navigation }) => {
   const [shift, setShift] = useState(false);
@@ -36,23 +35,25 @@ export const LoginScreen = ({ navigation }) => {
 
   useEffect(() => {
     Animated.timing(position, {
-      
       toValue: shift ? 180 : 50,
       duration: 300,
       useNativeDriver: false,
     }).start();
   }, [shift]);
 
-  const [login, setLogin] = useState("");
+  // const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+
   const hendelLogin = () => {
-   
-    console.log({ login: login, email: email, password: password });
-    setLogin("");
+    const login = { email, password };
+    dispatch(authLogin(login));
+    console.log({ email: email, password: password });
     setEmail("");
     setPassword("");
   };
+
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
@@ -88,7 +89,7 @@ export const LoginScreen = ({ navigation }) => {
             style={styles.button}
             onPress={() => {
               hendelLogin();
-              navigation.navigate("Home", { email, login });
+              // navigation.navigate("Home", { email, login });
             }}
           >
             <Text style={styles.buttonText}>Увійти</Text>

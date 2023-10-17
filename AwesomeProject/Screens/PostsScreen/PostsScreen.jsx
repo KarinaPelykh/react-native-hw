@@ -13,14 +13,14 @@ import { EvilIcons } from "@expo/vector-icons";
 export const PostsScreen = ({ route, navigation }) => {
   const [post, setPost] = useState([]);
   const { login, email } = route.params;
-  console.log(route.params);
+  // console.log(route.params);
   useEffect(() => {
     if (route.params) {
       setPost((prevState) => [...prevState, route.params]);
     }
   }, [route.params]);
-  console.log("post---->", post);
-  console.log("route.params---->", route.params);
+  // console.log("post---->", post);
+  // console.log("route.params---->", route.params);
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: "row", marginTop: 32, marginBottom: 32 }}>

@@ -1,5 +1,5 @@
 import { AntDesign } from "@expo/vector-icons";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { StatusBar } from "expo-status-bar";
 import {
   StyleSheet,
@@ -13,6 +13,8 @@ import {
   Dimensions,
   Animated,
 } from "react-native";
+import { useDispatch } from "react-redux";
+import { authRegisters } from "../../redux/auth/authOperation";
 
 export const RegistrationScreen = ({ navigation }) => {
   const [shift, setShift] = useState(false);
@@ -43,9 +45,11 @@ export const RegistrationScreen = ({ navigation }) => {
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const dispatch = useDispatch();
   const handelRegister = () => {
     console.log({ login: login, email: email, password: password });
+    const data = { login, email, password };
+    dispatch(authRegisters(data));
     setLogin("");
     setEmail("");
     setPassword("");
@@ -110,7 +114,7 @@ export const RegistrationScreen = ({ navigation }) => {
             style={styles.button}
             onPress={() => {
               handelRegister();
-              navigation.navigate("Home", { login, email });
+              // navigation.navigate("Home", { login, email });
             }}
           >
             <Text style={styles.buttonText}>Зареєструватися</Text>
