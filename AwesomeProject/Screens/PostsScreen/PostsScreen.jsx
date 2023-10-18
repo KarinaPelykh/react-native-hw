@@ -16,15 +16,14 @@ export const PostsScreen = ({ route, navigation }) => {
   const loginUser = useSelector(selectorLogin);
   console.log("loginUser--->", loginUser.login);
   const [post, setPost] = useState([]);
-  const { email } = route.params;
-  // console.log(route.params);
+  // const { email } = route.params;
+
   useEffect(() => {
     if (route.params) {
       setPost((prevState) => [...prevState, route.params]);
     }
   }, [route.params]);
-  // console.log("post---->", post);
-  // console.log("route.params---->", route.params);
+
   return (
     <View style={styles.container}>
       <View style={{ flexDirection: "row", marginTop: 32, marginBottom: 32 }}>
@@ -50,7 +49,7 @@ export const PostsScreen = ({ route, navigation }) => {
             {loginUser.login}
           </Text>
           <Text style={{ fontSize: 11, fontWeight: 400, color: "#212121CC" }}>
-            {email}
+            {loginUser.email}
           </Text>
         </View>
       </View>

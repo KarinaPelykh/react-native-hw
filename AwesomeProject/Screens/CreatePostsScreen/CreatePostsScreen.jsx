@@ -100,6 +100,7 @@ export const CreatePostsScreen = ({ navigation }) => {
             }}
           />
         </View>
+
         <TouchableOpacity
           style={styles.buttonCreat}
           onPress={() => {
@@ -178,6 +179,17 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     height: 240,
     width: 330,
+  },
+  textButtonHover: {
+    color: "#fff",
+  },
+  buttonCreatHover: {
+    height: 51,
+    borderRadius: 100,
+    backgroundColor: "#FF6C00",
+    justifyContent: "center",
+    alignItems: "center",
+    padding: 16,
   },
 });
 

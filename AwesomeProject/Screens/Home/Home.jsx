@@ -7,11 +7,18 @@ import { CreatePostsScreen } from "../CreatePostsScreen/CreatePostsScreen";
 import { ProfileScreen } from "../ProfileScreen/ProfileScreen";
 import { useRoute } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
+import { useDispatch } from "react-redux";
+import { logOut } from "../../redux/auth/authOperation";
 const Tabs = createBottomTabNavigator();
 
-export const Home = () => {
+export const Home = ({ navigation }) => {
   const route = useRoute();
   const { login, email } = route.params;
+  const dispatch = useDispatch();
+  const handelLogout = () => {
+    dispatch(logOut());
+    navigation.navigate("Login");
+  };
   return (
     <Tabs.Navigator
       style={styles.container}
@@ -69,9 +76,7 @@ export const Home = () => {
           headerRight: () => (
             <TouchableOpacity
               style={{ width: 24, height: 24, marginRight: 16 }}
-              onPress={() => {
-                navigation.navigate("Registration");
-              }}
+              onPress={handelLogout}
             >
               <MaterialIcons name="logout" size={24} color="gray" />
             </TouchableOpacity>

@@ -13,13 +13,14 @@ import {
   Dimensions,
   Animated,
 } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { authRegisters } from "../../redux/auth/authOperation";
+import { selectorLogin } from "../../redux/auth/authSelector";
 
 export const RegistrationScreen = ({ navigation }) => {
   const [shift, setShift] = useState(false);
   const [position] = useState(new Animated.Value(0));
-
+  const user = useSelector(selectorLogin);
   useEffect(() => {
     const listenerShow = Keyboard.addListener("keyboardDidShow", () => {
       setShift(true);
@@ -49,12 +50,16 @@ export const RegistrationScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const handelRegister = () => {
-    // console.log({ login: login, email: email, password: password });
     const data = { login, email, password };
-    dispatch(authRegisters(data));
-    setLogin("");
-    setEmail("");
-    setPassword("");
+    dispatch(authRegisters(data))
+      .unwrap()
+      .then(() => {
+        setLogin("");
+        setEmail("");
+        setPassword("");
+
+        navigation.navigate("Home", { login, email });
+      });
   };
 
   return (
@@ -128,7 +133,6 @@ export const RegistrationScreen = ({ navigation }) => {
             style={styles.button}
             onPress={() => {
               handelRegister();
-              navigation.navigate("Home", { login, email });
             }}
           >
             <Text style={styles.buttonText}>Зареєструватися</Text>

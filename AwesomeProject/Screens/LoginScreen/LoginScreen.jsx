@@ -12,13 +12,15 @@ import {
   Dimensions,
   Animated,
 } from "react-native";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { authLogin } from "../../redux/auth/authOperation";
+import { selectorLogin } from "../../redux/auth/authSelector";
 
 export const LoginScreen = ({ navigation }) => {
   const [shift, setShift] = useState(false);
   const [position] = useState(new Animated.Value(0));
-
+  const user = useSelector(selectorLogin);
+  console.log("user===>", user.email);
   useEffect(() => {
     const listenerShow = Keyboard.addListener("keyboardDidShow", () => {
       setShift(true);
@@ -41,7 +43,6 @@ export const LoginScreen = ({ navigation }) => {
     }).start();
   }, [shift]);
 
-  // const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(true);
@@ -49,10 +50,20 @@ export const LoginScreen = ({ navigation }) => {
 
   const hendelLogin = () => {
     const login = { email, password };
-    dispatch(authLogin(login));
-    // console.log({ email: email, password: password });
-    setEmail("");
-    setPassword("");
+    dispatch(authLogin(login))
+      // if (email !== user.email) {
+      //   navigation.navigate("Registration");
+      // } else {
+      //   navigation.navigate("Home", { email });
+      // }
+
+      .unwrap()
+      .then(() => {
+        setEmail("");
+        setPassword("");
+        // navigation.navigate("Registration");
+        navigation.navigate("Home", { email });
+      });
   };
 
   return (
@@ -104,7 +115,6 @@ export const LoginScreen = ({ navigation }) => {
             style={styles.button}
             onPress={() => {
               hendelLogin();
-              navigation.navigate("Home", { email });
             }}
           >
             <Text style={styles.buttonText}>Увійти</Text>
