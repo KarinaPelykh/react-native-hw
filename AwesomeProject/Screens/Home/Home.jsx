@@ -7,17 +7,19 @@ import { CreatePostsScreen } from "../CreatePostsScreen/CreatePostsScreen";
 import { ProfileScreen } from "../ProfileScreen/ProfileScreen";
 import { useRoute } from "@react-navigation/native";
 import { MaterialIcons } from "@expo/vector-icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../../redux/auth/authOperation";
+import { selectorLogin } from "../../redux/auth/authSelector";
 const Tabs = createBottomTabNavigator();
 
 export const Home = ({ navigation }) => {
-  const route = useRoute();
-  const { login, email } = route.params;
+  // const route = useRoute();
+  // const { login, email } = route.params;
+  const user = useSelector(selectorLogin);
   const dispatch = useDispatch();
   const handelLogout = () => {
+    navigation.navigate("Registration");
     dispatch(logOut());
-    navigation.navigate("Login");
   };
   return (
     <Tabs.Navigator
@@ -58,7 +60,7 @@ export const Home = ({ navigation }) => {
       <Tabs.Screen
         name="PostsScreen"
         component={PostsScreen}
-        initialParams={{ login, email }}
+        initialParams={{ user }}
         options={({ navigation }) => ({
           tabBarLabel: "",
           title: "Публікації ",
@@ -113,7 +115,7 @@ export const Home = ({ navigation }) => {
 
       <Tabs.Screen
         name="ProfileScreen"
-        initialParams={{ login }}
+        initialParams={{ user }}
         options={{ tabBarLabel: "", headerShown: false }}
         component={ProfileScreen}
       />

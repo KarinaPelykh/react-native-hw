@@ -12,12 +12,13 @@ export const authRegisters = createAsyncThunk(
   "auth/register",
   async ({ login, email, password }, { rejectWithValue }) => {
     try {
-      const users = await createUserWithEmailAndPassword(auth, email, password);
+      await createUserWithEmailAndPassword(auth, email, password);
       const user = auth.currentUser;
-
+      console.log("user===>", user);
       await updateProfile(user, {
         displayName: login,
       });
+      console.log("displayName---->", login);
 
       const data = {
         user: {
@@ -26,8 +27,6 @@ export const authRegisters = createAsyncThunk(
           id: user.uid,
         },
       };
-
-      console.log(data);
       return data;
     } catch (error) {
       return rejectWithValue(error.message);
@@ -60,27 +59,31 @@ export const authLogin = createAsyncThunk(
     }
   }
 );
-export const authStateChanged = createAsyncThunk(
-  "auth/stateChange",
-  async (_, { rejectWithValue, dispatch }) => {
-    try {
-      const result = onAuthStateChanged(auth, (user) => {
-        if (user) {
-          updateProfile(user, {
-            displayName: login,
-          });
-        }
-        dispatch(updateProfile);
-        dispatch(authStateChanged);
-      });
-      return () => {
-        userCredential();
-      };
-    } catch (error) {
-      return rejectWithValue(error.message);
-    }
-  }
-);
+
+// export const authStateChanged = createAsyncThunk(
+//   "auth/stateChange",
+//   async (_, { rejectWithValue, dispatch }) => {
+//     try {
+//       onAuthStateChanged(auth, (user) => {
+//         if (user) {
+//           // Отримати дані профілю користувача, наприклад, ім'я (login)
+//           const data = {
+//             user: {
+//               login: user.displayName,
+//               email: user.email,
+//               id: user.uid,
+//             },
+//           };
+
+//           dispatch(updateProfile(data));
+//         }
+//       });
+//       return;
+//     } catch (error) {
+//       return rejectWithValue(error.message);
+//     }
+//   }
+// );
 
 export const logOut = createAsyncThunk(
   "auth/logout",

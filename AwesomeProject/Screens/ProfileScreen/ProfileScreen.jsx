@@ -9,9 +9,7 @@ import {
   TouchableOpacity,
   Text,
 } from "react-native";
-export const ProfileScreen = ({ route }) => {
-  const { login } = route.params;
-
+export const ProfileScreen = ({ login }) => {
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
@@ -72,7 +70,6 @@ const styles = StyleSheet.create({
   },
 
   formWrapper: {
-    // marginTop: 150,
     marginTop: 350,
     paddingTop: 65,
     backgroundColor: "#FFFFFF",

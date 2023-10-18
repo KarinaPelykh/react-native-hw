@@ -56,22 +56,24 @@ export const CreatePostsScreen = ({ navigation }) => {
   };
 
   const handelInfo = () => {
-    // console.log({ name: name, lokation: lokation });
+    setTakeFoto("");
     setName("");
     setLokation("");
   };
   return (
     <View style={styles.container}>
-      <Camera style={styles.camera} ref={setFoto}>
-        {takeFoto && (
-          <View style={styles.fotoDiv}>
-            <Image source={{ uri: takeFoto }} style={{ borderRadius: 10 }} />
-          </View>
-        )}
-        <TouchableOpacity onPress={Photo} style={styles.button}>
-          <Ionicons name="md-camera-sharp" size={24} color="white" />
-        </TouchableOpacity>
-      </Camera>
+      {takeFoto ? (
+        <Image
+          source={{ uri: takeFoto }}
+          style={{ borderRadius: 10, height: 240, width: 330 }}
+        />
+      ) : (
+        <Camera style={styles.camera} ref={setFoto}>
+          <TouchableOpacity onPress={Photo} style={styles.button}>
+            <Ionicons name="md-camera-sharp" size={24} color="white" />
+          </TouchableOpacity>
+        </Camera>
+      )}
       <Text style={styles.text}>
         {takeFoto ? "Редагувати фото" : "Завантажте фото"}
       </Text>
@@ -102,7 +104,12 @@ export const CreatePostsScreen = ({ navigation }) => {
         </View>
 
         <TouchableOpacity
-          style={styles.buttonCreat}
+          style={[
+            styles.buttonCreat,
+            takeFoto
+              ? { backgroundColor: "#FF6C00" }
+              : { backgroundColor: "#E8E8E8" },
+          ]}
           onPress={() => {
             handelInfo();
             navigation.navigate("PostsScreen", { takeFoto, name, lokation });
@@ -163,7 +170,7 @@ const styles = StyleSheet.create({
   buttonCreat: {
     height: 51,
     borderRadius: 100,
-    backgroundColor: "#E8E8E8",
+
     justifyContent: "center",
     alignItems: "center",
     padding: 16,
@@ -192,103 +199,3 @@ const styles = StyleSheet.create({
     padding: 16,
   },
 });
-
-// import React, { useState, useEffect } from "react";
-// import { Text, View, TouchableOpacity, StyleSheet } from "react-native";
-// import { Camera } from "expo-camera";
-// import * as MediaLibrary from "expo-media-library";
-
-// export const CreatePostsScreen = () => {
-//   const [hasPermission, setHasPermission] = useState(null);
-//   const [cameraRef, setCameraRef] = useState(null);
-//   const [type, setType] = useState(Camera.Constants.Type.back);
-
-//   useEffect(() => {
-//     (async () => {
-//       const { status } = await Camera.requestPermissionsAsync();
-//       await MediaLibrary.requestPermissionsAsync();
-
-//       setHasPermission(status === "granted");
-//     })();
-//   }, []);
-
-//   if (hasPermission === null) {
-//     return <View />;
-//   }
-//   if (hasPermission === false) {
-//     return <Text>No access to camera</Text>;
-//   }
-
-//   return (
-//     <View style={styles.container}>
-//       <Camera style={styles.camera} type={type} ref={setCameraRef}>
-//         <View style={styles.photoView}>
-//           <TouchableOpacity
-//             style={styles.flipContainer}
-//             onPress={() => {
-//               setType(
-//                 type === Camera.Constants.Type.back
-//                   ? Camera.Constants.Type.front
-//                   : Camera.Constants.Type.back
-//               );
-//             }}
-//           >
-//             <Text style={{ fontSize: 18, marginBottom: 10, color: "white" }}>
-//               Flip
-//             </Text>
-//           </TouchableOpacity>
-//           <TouchableOpacity
-//             style={styles.button}
-//             onPress={async () => {
-//               if (cameraRef) {
-//                 const { uri } = await cameraRef.takePictureAsync();
-//                 await MediaLibrary.createAssetAsync(uri);
-//               }
-//             }}
-//           >
-//             <View style={styles.takePhotoOut}>
-//               <View style={styles.takePhotoInner}></View>
-//             </View>
-//           </TouchableOpacity>
-//         </View>
-//       </Camera>
-//     </View>
-//   );
-// };
-
-// const styles = StyleSheet.create({
-//   container: { flex: 1 },
-//   camera: { flex: 1 },
-//   photoView: {
-//     flex: 1,
-//     backgroundColor: "transparent",
-//     justifyContent: "flex-end",
-//   },
-
-//   flipContainer: {
-//     flex: 0.1,
-//     alignSelf: "flex-end",
-//   },
-
-//   button: { alignSelf: "center" },
-
-//   takePhotoOut: {
-//     borderWidth: 2,
-//     borderColor: "white",
-//     height: 50,
-//     width: 50,
-//     display: "flex",
-//     justifyContent: "center",
-//     alignItems: "center",
-//     borderRadius: 50,
-//   },
-
-//   takePhotoInner: {
-//     borderWidth: 2,
-//     borderColor: "white",
-//     height: 40,
-//     width: 40,
-//     backgroundColor: "white",
-//     borderRadius: 50,
-//   },
-// });

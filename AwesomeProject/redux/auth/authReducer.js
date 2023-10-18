@@ -2,7 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 import {
   authLogin,
   authRegisters,
-  authStateChanged,
+  // authStateChanged,
   logOut,
 } from "./authOperation";
 import { Alert } from "react-native";
@@ -18,22 +18,30 @@ export const authSlice = createSlice({
     stateChange: false,
   },
 
+  reducers: {
+    refreshUser: (state, { payload }) => {
+      state.user = payload.user;
+      state.stateChange = payload.stateChange;
+    },
+  },
   extraReducers: (bulder) => {
     bulder
       .addCase(authRegisters.fulfilled, (state, { payload }) => {
         state.user = payload.user;
-        state.stateChange = payload.stateChange;
+        console.log("state======>", payload.user.login);
+        state.stateChange = true;
       })
       .addCase(authLogin.fulfilled, (state, { payload }) => {
+        console.log("payload.user", payload.user);
         state.user = payload.user;
         state.stateChange = true;
       })
-      .addCase(authStateChanged.fulfilled, (state, { payload }) => {
-        state.user = payload.user;
-        state.stateChange = payload.stateChange;
-      })
+
       .addCase(logOut.fulfilled, (state, { payload }) => {
-        state.user = { login: null, email: null };
+        // state.user = ;
+        // state.stateChange = payload.stateChange;
+
+        state.user = { login: null, email: null, id: null };
         state.stateChange = false;
       })
       .addCase(authRegisters.rejected, (action) => {
@@ -45,4 +53,5 @@ export const authSlice = createSlice({
   },
 });
 
+export const { refreshUser } = authSlice.actions;
 export const authReducer = authSlice.reducer;
