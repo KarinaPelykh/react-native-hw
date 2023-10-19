@@ -14,9 +14,8 @@ import { selectorLogin } from "../../redux/auth/authSelector";
 
 export const PostsScreen = ({ route, navigation }) => {
   const loginUser = useSelector(selectorLogin);
-  console.log("loginUser--->", loginUser.login);
+  console.log("route--->", route.params);
   const [post, setPost] = useState([]);
-  // const { email } = route.params;
 
   useEffect(() => {
     if (route.params) {
@@ -77,7 +76,7 @@ export const PostsScreen = ({ route, navigation }) => {
                 {item.name}
               </Text>
             )}
-            {item.lokation && (
+            {item.adress && (
               <View
                 style={{
                   flexDirection: "row",
@@ -96,7 +95,9 @@ export const PostsScreen = ({ route, navigation }) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   onPress={() => {
-                    navigation.navigate("MapScreen");
+                    navigation.navigate("MapScreen", {
+                      location: item.location,
+                    });
                   }}
                 >
                   <EvilIcons name="location" size={24} color="gray" />
@@ -110,7 +111,7 @@ export const PostsScreen = ({ route, navigation }) => {
                     justifyContent: "flex-end",
                   }}
                 >
-                  {item.lokation}
+                  {item.adress}
                 </Text>
               </View>
             )}

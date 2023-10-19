@@ -19,9 +19,10 @@ export const authSlice = createSlice({
   },
 
   reducers: {
-    refreshUser: (state, { payload }) => {
+    refresh: (state, { payload }) => {
       state.user = payload.user;
-      state.stateChange = payload.stateChange;
+      state.stateChange = true;
+      console.log("reducer===>>>", state.stateChange);
     },
   },
   extraReducers: (bulder) => {
@@ -38,9 +39,6 @@ export const authSlice = createSlice({
       })
 
       .addCase(logOut.fulfilled, (state, { payload }) => {
-        // state.user = ;
-        // state.stateChange = payload.stateChange;
-
         state.user = { login: null, email: null, id: null };
         state.stateChange = false;
       })
@@ -53,5 +51,5 @@ export const authSlice = createSlice({
   },
 });
 
-export const { refreshUser } = authSlice.actions;
+export const { refresh } = authSlice.actions;
 export const authReducer = authSlice.reducer;

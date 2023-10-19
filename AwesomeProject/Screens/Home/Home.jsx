@@ -18,7 +18,6 @@ export const Home = ({ navigation }) => {
   const user = useSelector(selectorLogin);
   const dispatch = useDispatch();
   const handelLogout = () => {
-    navigation.navigate("Registration");
     dispatch(logOut());
   };
   return (

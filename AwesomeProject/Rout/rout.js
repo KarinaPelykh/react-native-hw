@@ -8,13 +8,14 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
 import { selectStateChange } from "../redux/auth/authSelector";
-import { refreshUser } from "../redux/auth/authReducer";
+import { refresh } from "../redux/auth/authReducer";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "../firebase/cofig";
 
 const MainStack = createStackNavigator();
 export const Rout = () => {
   const stateChange = useSelector(selectStateChange);
+  console.log("stateChange===>", stateChange);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -28,16 +29,18 @@ export const Rout = () => {
           },
           stateChanged: true,
         };
-        dispatch(refreshUser(data));
+        dispatch(refresh(data));
       } else {
         return;
       }
     });
   }, []);
+
+  const initialRoute = stateChange ? "Login" : "Home";
   return (
     <NavigationContainer>
-      <MainStack.Navigator initialRouteName="Login">
-        {stateChange ? (
+      <MainStack.Navigator initialRouteName={initialRoute}>
+        {!stateChange ? (
           <>
             <MainStack.Screen
               name="Registration"

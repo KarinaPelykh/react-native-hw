@@ -14,14 +14,18 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { useEffect, useState } from "react";
 import * as MediaLibrary from "expo-media-library";
 import * as Location from "expo-location";
+
+import { collection, addDoc } from "firebase/firestore";
+import { db, storage } from "../../firebase/cofig";
+import { adaptationFoto } from "../../utils/utils";
 export const CreatePostsScreen = ({ navigation }) => {
   const [foto, setFoto] = useState(null);
   const [takeFoto, setTakeFoto] = useState(null);
   const [hasPermission, setHasPermission] = useState(null);
   const [name, setName] = useState("");
-  const [lokation, setLokation] = useState("");
+  const [adress, setAdress] = useState("");
   const [location, setLocation] = useState(null);
-
+  console.log("STARE LOCAION ", location);
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
@@ -29,18 +33,34 @@ export const CreatePostsScreen = ({ navigation }) => {
       setHasPermission(status === "granted");
     })();
 
+    // (async () => {
+    //   let { status } = await Location.requestForegroundPermissionsAsync();
+    //   if (status !== "granted") {
+    //     console.log("Permission to access location was denied");
+    //   } else {
+    //     let location = await Location.getCurrentPositionAsync({});
+    //     console.log("location===========", location);
+    //     const coords = {
+    //       latitude: location.coords.latitude,
+    //       longitude: location.coords.longitude,
+    //     };
+    //     setLocation(coords);
+    //   }
+    // })();
+
     (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        console.log("Permission to access location was denied");
-      } else {
-        let location = await Location.getCurrentPositionAsync({});
-        const coords = {
-          latitude: location.coords.latitude,
-          longitude: location.coords.longitude,
-        };
-        setLocation(coords);
-      }
+      await Location.requestForegroundPermissionsAsync();
+
+      let location = await Location.getCurrentPositionAsync({});
+      const coords = {
+        latitude: location.coords.latitude,
+        longitude: location.coords.longitude,
+      };
+      setLocation(coords);
+      const [adress] = await Location.reverseGeocodeAsync(coords);
+
+      const fullAddress = `${adress.region}, ${adress.country}`;
+      setAdress(fullAddress);
     })();
   }, []);
 
@@ -50,15 +70,36 @@ export const CreatePostsScreen = ({ navigation }) => {
 
       const cameraFoto = camera.uri;
       const location = await Location.getCurrentPositionAsync();
+
       setTakeFoto(cameraFoto);
       await MediaLibrary.createAssetAsync(cameraFoto);
     }
   };
 
+  const updatePhotoToServer = async () => {
+    const image = await adaptationFoto({
+      foto: takeFoto,
+    });
+    const data = {
+      image,
+      name,
+      adress,
+      location,
+    };
+    console.log("updatePhotoToServer", location);
+    // try {
+    //   const docRef = await addDoc(collection(db, "users", data));
+    // } catch (e) {
+    //   console.error("Error adding document: ", e);
+    //   throw e;
+    // }
+  };
+
   const handelInfo = () => {
     setTakeFoto("");
     setName("");
-    setLokation("");
+    setAdress("");
+    setLocation("");
   };
   return (
     <View style={styles.container}>
@@ -88,8 +129,8 @@ export const CreatePostsScreen = ({ navigation }) => {
           <TextInput
             style={styles.inputsecond}
             placeholder="Місцевість..."
-            value={lokation}
-            onChangeText={setLokation}
+            value={adress}
+            onChangeText={setAdress}
           />
           <Entypo
             name="location-pin"
@@ -111,8 +152,14 @@ export const CreatePostsScreen = ({ navigation }) => {
               : { backgroundColor: "#E8E8E8" },
           ]}
           onPress={() => {
+            updatePhotoToServer();
             handelInfo();
-            navigation.navigate("PostsScreen", { takeFoto, name, lokation });
+            navigation.navigate("PostsScreen", {
+              takeFoto,
+              name,
+              adress,
+              location,
+            });
           }}
         >
           <Text style={styles.textButton}>Опубліковати</Text>
