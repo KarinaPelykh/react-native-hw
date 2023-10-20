@@ -3,7 +3,7 @@ import { storage } from "../firebase/cofig";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export const uploadImage = async ({ imageUri, folder }) => {
-  console.log(imageUri, folder);
+  // console.log(imageUri, folder);
   const userId = nanoid();
 
   if (imageUri) {

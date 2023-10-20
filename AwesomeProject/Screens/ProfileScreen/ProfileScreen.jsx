@@ -9,7 +9,41 @@ import {
   TouchableOpacity,
   Text,
 } from "react-native";
-export const ProfileScreen = ({ login }) => {
+import { MaterialIcons } from "@expo/vector-icons";
+import { useDispatch, useSelector } from "react-redux";
+import { logOut } from "../../redux/auth/authOperation";
+import { selectorLogin } from "../../redux/auth/authSelector";
+import { FlatList } from "react-native-gesture-handler";
+import { useEffect, useState } from "react";
+import { collection, onSnapshot } from "firebase/firestore";
+import { db } from "../../firebase/cofig";
+import { EvilIcons } from "@expo/vector-icons";
+import { FontAwesome } from "@expo/vector-icons";
+
+export const ProfileScreen = ({ navigation }) => {
+  const user = useSelector(selectorLogin);
+  const dispatch = useDispatch();
+  const handelLogout = () => {
+    dispatch(logOut());
+  };
+  const [posts, setPosts] = useState([]);
+  const [like, setLike] = useState(0);
+  const step = 1;
+  useEffect(() => {
+    (async () => {
+      onSnapshot(collection(db, "posts"), (doc) => {
+        const posts = doc.docs
+          .map((post) => ({ ...post.data(), id: post.id }))
+          .sort((a, b) => b.date - a.date);
+        setPosts(posts);
+      });
+    })();
+  }, []);
+
+  const handelLike = () => {
+    const liks = step + like;
+    setLike(liks);
+  };
   return (
     <View style={styles.container}>
       <StatusBar style="auto" />
@@ -35,17 +69,98 @@ export const ProfileScreen = ({ login }) => {
             />
           </TouchableOpacity>
         </View>
-
-        <Text style={styles.text}>{login}</Text>
-
-        <View
+        <TouchableOpacity
           style={{
-            width: 343,
-            height: 240,
+            width: 24,
+            height: 24,
+            position: "absolute",
+            top: 22,
+            right: 16,
           }}
+          onPress={handelLogout}
         >
-          <Image />
-        </View>
+          <MaterialIcons name="logout" size={24} color="gray" />
+        </TouchableOpacity>
+        <Text style={styles.text}>{user.login}</Text>
+
+        <FlatList
+          data={posts}
+          keyExtractor={(item, index) => index.toString()}
+          renderItem={({ item }) => (
+            <View>
+              {item.imageUrl && (
+                <Image
+                  source={{ uri: item.imageUrl }}
+                  style={{ height: 240, borderRadius: 10, width: 343 }}
+                />
+              )}
+              {item.name && (
+                <Text
+                  style={{
+                    fontSize: 17,
+                    fontWeight: 700,
+                    width: 200,
+                    height: 30,
+                  }}
+                >
+                  {item.name}
+                </Text>
+              )}
+              {item.adress && (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "flex-end",
+                    justifyContent: "flex-end",
+                    marginBottom: 23,
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <TouchableOpacity
+                    style={{}}
+                    onPress={() => {
+                      navigation.navigate("CommentsScreen", {
+                        photo: item.imageUrl,
+                        id: item.id,
+                      });
+                    }}
+                  >
+                    <FontAwesome name="comment" size={18} color="#FF6C00" />
+                  </TouchableOpacity>
+                  <View style={{ flexDirection: "row" }}>
+                    <TouchableOpacity onPress={handelLike}>
+                      <EvilIcons name="like" size={24} color="#FF6C00" />
+                    </TouchableOpacity>
+                    <Text>{like}</Text>
+                  </View>
+                  <View style={{ flexDirection: "row" }}>
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate("MapScreen", {
+                          location: item.location,
+                        });
+                      }}
+                    >
+                      <EvilIcons name="location" size={24} color="gray" />
+                    </TouchableOpacity>
+
+                    <Text
+                      style={{
+                        fontSize: 11,
+                        fontWeight: 400,
+                        color: "#212121CC",
+                        alignItems: "flex-end",
+                        justifyContent: "flex-end",
+                      }}
+                    >
+                      {item.adress}
+                    </Text>
+                  </View>
+                </View>
+              )}
+            </View>
+          )}
+        />
       </View>
     </View>
   );
@@ -54,7 +169,7 @@ export const ProfileScreen = ({ login }) => {
 const screenSize = Dimensions.get("screen");
 const styles = StyleSheet.create({
   container: {
-    minHeight: screenSize.height,
+    height: screenSize.height,
     backgroundColor: "white",
   },
 
@@ -66,11 +181,16 @@ const styles = StyleSheet.create({
   },
   avatar: {
     position: "absolute",
-    top: -55,
+    top: -1,
+    left: -1,
+    width: 132,
+    height: 120,
+    borderRadius: 15,
   },
 
   formWrapper: {
-    marginTop: 350,
+    position: "relative",
+    marginTop: 150,
     paddingTop: 65,
     backgroundColor: "#FFFFFF",
     alignItems: "center",

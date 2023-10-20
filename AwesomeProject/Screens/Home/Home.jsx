@@ -13,8 +13,6 @@ import { selectorLogin } from "../../redux/auth/authSelector";
 const Tabs = createBottomTabNavigator();
 
 export const Home = ({ navigation }) => {
-  // const route = useRoute();
-  // const { login, email } = route.params;
   const user = useSelector(selectorLogin);
   const dispatch = useDispatch();
   const handelLogout = () => {

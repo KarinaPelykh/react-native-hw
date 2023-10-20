@@ -11,17 +11,31 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { EvilIcons } from "@expo/vector-icons";
 import { useSelector } from "react-redux";
 import { selectorLogin } from "../../redux/auth/authSelector";
+import { collection, getDocs, onSnapshot } from "firebase/firestore";
+import { db } from "../../firebase/cofig";
 
 export const PostsScreen = ({ route, navigation }) => {
   const loginUser = useSelector(selectorLogin);
-  console.log("route--->", route.params);
-  const [post, setPost] = useState([]);
+  const [posts, setPosts] = useState([]);
+  // const [postDatabase, setPostDatebase] = useState([]);
+  console.log("route--->", posts);
+  // console.log("postDatabase",dataname);
+  // useEffect(() => {
+  //   if (route.params) {
+  //     setPost((prevState) => [...prevState, route.params]);
+  //   }
+  // }, [route.params]);
 
   useEffect(() => {
-    if (route.params) {
-      setPost((prevState) => [...prevState, route.params]);
-    }
-  }, [route.params]);
+    (async () => {
+      onSnapshot(collection(db, "posts"), (doc) => {
+        const posts = doc.docs
+          .map((post) => ({ ...post.data(), id: post.id }))
+          .sort((a, b) => b.date - a.date);
+        setPosts(posts);
+      });
+    })();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -54,14 +68,13 @@ export const PostsScreen = ({ route, navigation }) => {
       </View>
 
       <FlatList
-        data={post}
+        data={posts}
         keyExtractor={(item, index) => index.toString()}
-        // keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View>
-            {item.takeFoto && (
+            {item.imageUrl && (
               <Image
-                source={{ uri: item.takeFoto }}
+                source={{ uri: item.imageUrl }}
                 style={{ height: 240, borderRadius: 10 }}
               />
             )}
@@ -84,36 +97,42 @@ export const PostsScreen = ({ route, navigation }) => {
                   alignItems: "flex-end",
                   justifyContent: "flex-end",
                   marginBottom: 23,
+                  justifyContent: "space-between",
                 }}
               >
                 <TouchableOpacity
-                  style={{ marginRight: 235 }}
+                  style={{}}
                   onPress={() => {
-                    navigation.navigate("CommentsScreen");
+                    navigation.navigate("CommentsScreen", {
+                      photo: item.imageUrl,
+                      id: item.id,
+                    });
                   }}
                 >
                   <EvilIcons name="comment" size={24} color="gray" />
                 </TouchableOpacity>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate("MapScreen", {
-                      location: item.location,
-                    });
-                  }}
-                >
-                  <EvilIcons name="location" size={24} color="gray" />
-                </TouchableOpacity>
-                <Text
-                  style={{
-                    fontSize: 11,
-                    fontWeight: 400,
-                    color: "#212121CC",
-                    alignItems: "flex-end",
-                    justifyContent: "flex-end",
-                  }}
-                >
-                  {item.adress}
-                </Text>
+                <View style={{ flexDirection: "row" }}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.navigate("MapScreen", {
+                        location: item.location,
+                      });
+                    }}
+                  >
+                    <EvilIcons name="location" size={24} color="gray" />
+                  </TouchableOpacity>
+                  <Text
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 400,
+                      color: "#212121CC",
+                      alignItems: "flex-end",
+                      justifyContent: "flex-end",
+                    }}
+                  >
+                    {item.adress}
+                  </Text>
+                </View>
               </View>
             )}
           </View>

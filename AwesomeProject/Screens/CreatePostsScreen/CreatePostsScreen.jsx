@@ -18,6 +18,7 @@ import * as Location from "expo-location";
 import { collection, addDoc } from "firebase/firestore";
 import { db, storage } from "../../firebase/cofig";
 import { uploadImage } from "../../utils/utils";
+import { nanoid } from "@reduxjs/toolkit";
 export const CreatePostsScreen = ({ navigation }) => {
   const [foto, setFoto] = useState(null);
   const [takeFoto, setTakeFoto] = useState(null);
@@ -26,7 +27,7 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [adress, setAdress] = useState("");
   const [location, setLocation] = useState(null);
   console.log("STAtE LOCAION ", location);
-  console.log("STAtE takeFoto ", takeFoto);
+  // console.log("STAtE takeFoto ", takeFoto);
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
@@ -77,6 +78,7 @@ export const CreatePostsScreen = ({ navigation }) => {
     }
   };
   const handlePost = async () => {
+    const id = nanoid();
     try {
       const imageUrl = await uploadImage({
         imageUri: takeFoto,
@@ -85,9 +87,11 @@ export const CreatePostsScreen = ({ navigation }) => {
 
       if (imageUrl) {
         const postData = {
+          id,
           name,
           imageUrl,
           location,
+          adress,
           date: Date.now(),
         };
 
@@ -104,7 +108,7 @@ export const CreatePostsScreen = ({ navigation }) => {
   };
 
   const handelInfo = () => {
-    // setTakeFoto("");
+    setTakeFoto("");
     setName("");
     setAdress("");
   };
@@ -159,7 +163,6 @@ export const CreatePostsScreen = ({ navigation }) => {
               : { backgroundColor: "#E8E8E8" },
           ]}
           onPress={() => {
-            // updatePhotoToServer();
             handlePost();
 
             navigation.navigate("PostsScreen", {
