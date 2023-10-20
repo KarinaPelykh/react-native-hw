@@ -17,7 +17,7 @@ import * as Location from "expo-location";
 
 import { collection, addDoc } from "firebase/firestore";
 import { db, storage } from "../../firebase/cofig";
-import { adaptationFoto } from "../../utils/utils";
+import { uploadImage } from "../../utils/utils";
 export const CreatePostsScreen = ({ navigation }) => {
   const [foto, setFoto] = useState(null);
   const [takeFoto, setTakeFoto] = useState(null);
@@ -25,7 +25,8 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [name, setName] = useState("");
   const [adress, setAdress] = useState("");
   const [location, setLocation] = useState(null);
-  console.log("STARE LOCAION ", location);
+  console.log("STAtE LOCAION ", location);
+  console.log("STAtE takeFoto ", takeFoto);
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
@@ -75,32 +76,37 @@ export const CreatePostsScreen = ({ navigation }) => {
       await MediaLibrary.createAssetAsync(cameraFoto);
     }
   };
-
-  const updatePhotoToServer = async () => {
-    const image = await adaptationFoto({
-      imageUri: takeFoto,
-    });
-    const data = {
-      image,
-      name,
-      adress,
-      location,
-      date: Date.now(),
-    };
-    console.log("updatePhotoToServer", location);
+  const handlePost = async () => {
     try {
-      const docRef = await addDoc(collection(db, "users", data));
-    } catch (e) {
-      console.error("Error adding document: ", e);
-      throw e;
+      const imageUrl = await uploadImage({
+        imageUri: takeFoto,
+        folder: "postImages",
+      });
+
+      if (imageUrl) {
+        const postData = {
+          name,
+          imageUrl,
+          location,
+          date: Date.now(),
+        };
+
+        const docRef = await addDoc(collection(db, "posts"), postData);
+        console.log("Document written with ID: ", docRef.id);
+      } else {
+        console.error("Failed to upload image. imageUrl is undefined.");
+      }
+    } catch (error) {
+      console.error("Error handling post: ", error);
     }
+
+    handelInfo();
   };
 
   const handelInfo = () => {
-    setTakeFoto("");
+    // setTakeFoto("");
     setName("");
     setAdress("");
-    setLocation("");
   };
   return (
     <View style={styles.container}>
@@ -153,8 +159,9 @@ export const CreatePostsScreen = ({ navigation }) => {
               : { backgroundColor: "#E8E8E8" },
           ]}
           onPress={() => {
-            updatePhotoToServer();
-            handelInfo();
+            // updatePhotoToServer();
+            handlePost();
+
             navigation.navigate("PostsScreen", {
               takeFoto,
               name,

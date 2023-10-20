@@ -1,51 +1,27 @@
-// import { storage } from "firebase/storage";
-// import { getDownloadURL, ref } from "firebase/storage";
-
-// export const adaptationFoto = async ({ foto }) => {
-//   console.log(foto);
-//   try {
-//     if (foto) {
-//       const respons = await fetch(foto);
-//       const file = await respons.blob();
-//       const uniCodePostId = Date.now().toString();
-
-//       const downloadURL = await getDownloadURL(
-//         ref(storage, `postImage/${uniCodePostId}`)
-//       );
-//       return downloadURL;
-//     } else {
-//       throw new Error("Фото не було надано");
-//     }
-//   } catch (error) {
-//     console.error("Помилка обробки фото:", error);
-//     throw error;
-//   }
-// };
 import { nanoid } from "@reduxjs/toolkit";
-import { storage } from "firebase/storage";
+import { storage } from "../firebase/cofig";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
-export const adaptationFoto = async ({ image }) => {
-  const uniqueAvatarId = nanoid();
+export const uploadImage = async ({ imageUri, folder }) => {
+  console.log(imageUri, folder);
+  const userId = nanoid();
 
-  if (image) {
+  if (imageUri) {
     try {
-      const response = await fetch(image);
+      const response = await fetch(imageUri);
+      // console.log("response===========", response);
       const file = await response.blob();
-
-      const imageRef = ref(storage, `postImages/${uniqueAvatarId}`);
-
+      // console.log("file===========", file);
+      const imageRef = await ref(storage, `${folder}/${userId}`);
+      // console.log("storage===========", imageRef);
       await uploadBytes(imageRef, file);
 
       const downloadURL = await getDownloadURL(imageRef);
-
+      console.log("downloadURL===========", downloadURL);
       return downloadURL;
     } catch (error) {
-      console.error("adaptationFoto: ", error);
-      throw error;
+      console.warn("uploadImage: ", error);
     }
-  } else {
-    console.warn("adaptationFoto: No image provided");
-    return null;
   }
+  return null;
 };
