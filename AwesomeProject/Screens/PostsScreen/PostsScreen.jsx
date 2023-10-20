@@ -56,6 +56,7 @@ export const PostsScreen = ({ route, navigation }) => {
       <FlatList
         data={post}
         keyExtractor={(item, index) => index.toString()}
+        // keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View>
             {item.takeFoto && (

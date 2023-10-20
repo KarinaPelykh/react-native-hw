@@ -78,21 +78,22 @@ export const CreatePostsScreen = ({ navigation }) => {
 
   const updatePhotoToServer = async () => {
     const image = await adaptationFoto({
-      foto: takeFoto,
+      imageUri: takeFoto,
     });
     const data = {
       image,
       name,
       adress,
       location,
+      date: Date.now(),
     };
     console.log("updatePhotoToServer", location);
-    // try {
-    //   const docRef = await addDoc(collection(db, "users", data));
-    // } catch (e) {
-    //   console.error("Error adding document: ", e);
-    //   throw e;
-    // }
+    try {
+      const docRef = await addDoc(collection(db, "users", data));
+    } catch (e) {
+      console.error("Error adding document: ", e);
+      throw e;
+    }
   };
 
   const handelInfo = () => {
