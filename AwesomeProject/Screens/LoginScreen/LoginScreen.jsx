@@ -11,6 +11,7 @@ import {
   ScrollView,
   Dimensions,
   Animated,
+  Alert,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { authLogin } from "../../redux/auth/authOperation";
@@ -49,20 +50,20 @@ export const LoginScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const hendelLogin = () => {
+    if (email === "" || password === "") {
+      navigation.navigate("Registration");
+      Alert.alert(`Вибачте, але такого користувача не знайдено`);
+    }
     const login = { email, password };
     dispatch(authLogin(login))
-      // if (email !== user.email) {
-      //   navigation.navigate("Registration");
-      // } else {
-      //   navigation.navigate("Home", { email });
-      // }
-
       .unwrap()
       .then(() => {
         setEmail("");
         setPassword("");
-        // navigation.navigate("Registration");
         navigation.navigate("Home", { email });
+      })
+      .catch((error) => {
+        console.log(error.message);
       });
   };
 

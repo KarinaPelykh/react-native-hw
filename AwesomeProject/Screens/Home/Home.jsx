@@ -10,6 +10,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { logOut } from "../../redux/auth/authOperation";
 import { selectorLogin } from "../../redux/auth/authSelector";
+import { View } from "react-native";
 const Tabs = createBottomTabNavigator();
 
 export const Home = ({ navigation }) => {
@@ -20,7 +21,6 @@ export const Home = ({ navigation }) => {
   };
   return (
     <Tabs.Navigator
-      style={styles.container}
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => {
           let iconName;
@@ -47,12 +47,18 @@ export const Home = ({ navigation }) => {
           height: 60,
           padding: 9,
         },
-        tabBarLabelStyle: {},
+
         tabBarActiveTintColor: "white",
-        tabBarActiveBackgroundColor: "tomato",
+        tabBarActiveBackgroundColor: "#FF6C00",
         tabBarInactiveTintColor: "gray",
         tabBarHideOnKeyboard: "true ",
       })}
+      // tabBarOptions={{
+      //   tabStyle: {
+      //     borderRadius: 100,
+      //     height: 50,
+      //   },
+      // }}
     >
       <Tabs.Screen
         name="PostsScreen"
@@ -98,7 +104,11 @@ export const Home = ({ navigation }) => {
           headerTitleAlign: "center",
           headerLeft: () => (
             <TouchableOpacity
-              style={{ width: 24, height: 24, marginLeft: 16 }}
+              style={{
+                width: 24,
+                height: 24,
+                marginLeft: 16,
+              }}
               onPress={() => {
                 navigation.navigate("PostsScreen");
               }}
@@ -123,9 +133,6 @@ export const Home = ({ navigation }) => {
 const screenSize = Dimensions.get("screen");
 
 const styles = StyleSheet.create({
-  container: {
-    // minHeight: screenSize.height,
-  },
   containers: {
     flex: 1,
     alignItems: "center",

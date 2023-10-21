@@ -97,8 +97,9 @@ export const ProfileScreen = ({ navigation }) => {
               {item.name && (
                 <Text
                   style={{
+                    fontFamily: "Roboto",
                     fontSize: 17,
-                    fontWeight: 700,
+                    fontWeight: "bold",
                     width: 200,
                     height: 30,
                   }}
@@ -116,25 +117,36 @@ export const ProfileScreen = ({ navigation }) => {
                     justifyContent: "space-between",
                   }}
                 >
-                  <TouchableOpacity
-                    style={{}}
-                    onPress={() => {
-                      navigation.navigate("CommentsScreen", {
-                        photo: item.imageUrl,
-                        id: item.id,
-                      });
+                  <View style={{ flexDirection: "row" }}>
+                    <TouchableOpacity
+                      style={{ marginRight: 6 }}
+                      onPress={() => {
+                        navigation.navigate("CommentsScreen", {
+                          photo: item.imageUrl,
+                          id: item.id,
+                        });
+                      }}
+                    >
+                      <FontAwesome name="comment" size={18} color="#FF6C00" />
+                    </TouchableOpacity>
+                    <Text>0</Text>
+                  </View>
+
+                  <View
+                    style={{
+                      flexDirection: "row",
+                      marginRight: 80,
                     }}
                   >
-                    <FontAwesome name="comment" size={18} color="#FF6C00" />
-                  </TouchableOpacity>
-                  <View style={{ flexDirection: "row" }}>
                     <TouchableOpacity onPress={handelLike}>
                       <EvilIcons name="like" size={24} color="#FF6C00" />
                     </TouchableOpacity>
                     <Text>{like}</Text>
                   </View>
+
                   <View style={{ flexDirection: "row" }}>
                     <TouchableOpacity
+                      style={{ marginRight: 6 }}
                       onPress={() => {
                         navigation.navigate("MapScreen", {
                           location: item.location,
@@ -143,11 +155,11 @@ export const ProfileScreen = ({ navigation }) => {
                     >
                       <EvilIcons name="location" size={24} color="gray" />
                     </TouchableOpacity>
-
                     <Text
                       style={{
+                        fontFamily: "Roboto",
                         fontSize: 11,
-                        fontWeight: 400,
+                        fontWeight: "regular",
                         color: "#212121CC",
                         alignItems: "flex-end",
                         justifyContent: "flex-end",
@@ -215,8 +227,9 @@ const styles = StyleSheet.create({
   text: {
     marginTop: 32,
     marginBottom: 33,
+    fontFamily: "Roboto",
     fontSize: 30,
-    fontWeight: "500",
+    fontWeight: "medium",
   },
   buttonOpen: {
     position: "relative",

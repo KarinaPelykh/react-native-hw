@@ -41,13 +41,13 @@ export const authSlice = createSlice({
       .addCase(logOut.fulfilled, (state, { payload }) => {
         state.user = { login: null, email: null, id: null };
         state.stateChange = false;
-      })
-      .addCase(authRegisters.rejected, (action) => {
-        Alert.alert(`Пройдіть реєстрацію`);
-      })
-      .addCase(authLogin.rejected, (action) => {
-        Alert.alert(`Вибачте, але такого користувача не знайдено`);
       });
+    // .addCase(authRegisters.rejected, (action) => {
+    //   Alert.alert(`Пройдіть реєстрацію`);
+    // })
+    // .addCase(authLogin.rejected, (action) => {
+    //   Alert.alert(`Вибачте, але такого користувача не знайдено`);
+    // });
   },
 });
 

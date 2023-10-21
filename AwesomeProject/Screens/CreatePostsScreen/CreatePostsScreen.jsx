@@ -173,7 +173,14 @@ export const CreatePostsScreen = ({ navigation }) => {
             });
           }}
         >
-          <Text style={styles.textButton}>Опубліковати</Text>
+          <Text
+            style={[
+              styles.textButton,
+              takeFoto ? { color: "#fff" } : { color: "#BDBDBD" },
+            ]}
+          >
+            Опубліковати
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -205,8 +212,9 @@ const styles = StyleSheet.create({
   text: {
     marginTop: 8,
     marginBottom: 22,
+    fontFamily: "Roboto",
     fontSize: 16,
-    fontWeight: "400",
+    fontWeight: "regular",
     color: "#E8E8E8",
   },
   input: {
@@ -234,7 +242,7 @@ const styles = StyleSheet.create({
     padding: 16,
   },
   textButton: {
-    color: "#BDBDBD",
+    fontFamily: "Roboto",
   },
   fotoDiv: {
     position: "absolute",
@@ -244,16 +252,5 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     height: 240,
     width: 330,
-  },
-  textButtonHover: {
-    color: "#fff",
-  },
-  buttonCreatHover: {
-    height: 51,
-    borderRadius: 100,
-    backgroundColor: "#FF6C00",
-    justifyContent: "center",
-    alignItems: "center",
-    padding: 16,
   },
 });

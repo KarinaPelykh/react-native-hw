@@ -58,10 +58,19 @@ export const PostsScreen = ({ route, navigation }) => {
         <View
           style={{ flexDirection: "column", justifyContent: "center", flex: 1 }}
         >
-          <Text style={{ fontSize: 17, fontWeight: 700 }}>
+          <Text
+            style={{ fontSize: 17, fontWeight: "bold", fontFamily: "Roboto" }}
+          >
             {loginUser.login}
           </Text>
-          <Text style={{ fontSize: 11, fontWeight: 400, color: "#212121CC" }}>
+          <Text
+            style={{
+              fontSize: 11,
+              fontWeight: "regular",
+              color: "#212121CC",
+              fontFamily: "Roboto",
+            }}
+          >
             {loginUser.email}
           </Text>
         </View>
@@ -81,8 +90,9 @@ export const PostsScreen = ({ route, navigation }) => {
             {item.name && (
               <Text
                 style={{
+                  fontFamily: "Roboto",
                   fontSize: 17,
-                  fontWeight: 700,
+                  fontWeight: "bold",
                   width: 200,
                   height: 30,
                 }}
@@ -123,8 +133,9 @@ export const PostsScreen = ({ route, navigation }) => {
                   </TouchableOpacity>
                   <Text
                     style={{
+                      fontFamily: "Roboto",
                       fontSize: 11,
-                      fontWeight: 400,
+                      fontWeight: "regular",
                       color: "#212121CC",
                       alignItems: "flex-end",
                       justifyContent: "flex-end",

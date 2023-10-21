@@ -8,6 +8,7 @@ import {
   Text,
   KeyboardAvoidingView,
   Platform,
+  Alert,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
@@ -15,6 +16,7 @@ import { useRoute } from "@react-navigation/native";
 import { db } from "../../firebase/cofig";
 import { addDoc, collection, doc, onSnapshot } from "firebase/firestore";
 import { nanoid } from "@reduxjs/toolkit";
+import { DataTime } from "../../hooks/DataTime";
 export const CommentsScreen = () => {
   const [photo, setPhoto] = useState("");
   const [comment, setComment] = useState("");
@@ -30,11 +32,13 @@ export const CommentsScreen = () => {
 
   useEffect(() => {
     (async () => {
-      // const addComment = doc(db, "posts", rout.params.id);
-      // console.log("addComment", addComment);
+      const addComment = doc(db, "posts", rout.params.id);
+      console.log("addComment=============", addComment);
       onSnapshot(collection(db, "comentar"), (doc) => {
         const comentar = doc.docs
-          .map((coment) => ({ ...coment.data(), id: coment.id }))
+
+          .map((doc) => ({ ...doc.data(), id: doc.id }))
+          .filter((coment) => coment.postId === rout.params.id)
           .sort((a, b) => b.date - a.date);
         setComments(comentar);
       });
@@ -60,20 +64,26 @@ export const CommentsScreen = () => {
   //   }
   // };
   const handelAddComent = async () => {
-    const id = nanoid();
-    try {
-      const postData = {
-        id,
-        comment,
-        date: Date.now(),
-      };
+    if (comment === "") {
+      return Alert.alert("Додайте коменетар");
+    } else {
+      const id = nanoid();
+      try {
+        const postData = {
+          id,
+          postId: rout.params.id,
+          comment,
+          date: Date.now(),
+        };
 
-      const docRef = await addDoc(collection(db, "comentar"), postData);
-      console.log("Document written with ID: ", docRef.id);
-      setComments((prevState) => [...prevState, comment]);
-      setComment("");
-    } catch (error) {
-      console.error("Error handling post: ", error);
+        const docRef = await addDoc(collection(db, "comentar"), postData);
+        console.log("Document written with ID: ", docRef.id);
+        // setComments((prevState) => [...prevState, comment]);
+
+        setComment("");
+      } catch (error) {
+        console.error("Error handling post: ", error);
+      }
     }
   };
 
@@ -87,10 +97,10 @@ export const CommentsScreen = () => {
           />
         )}
         <View style={{ flexDirection: "column" }}>
-          {comments.map((comment, index) => (
+          {comments.map(({ comment, id, data }, index) => (
             <View key={index} style={{ flexDirection: "row" }}>
-              <Text style={styles.comment} key={comment.id}>
-                {comment.comment}
+              <Text style={styles.comment} key={id}>
+                {comment}
               </Text>
 
               <Image
@@ -119,7 +129,9 @@ export const CommentsScreen = () => {
           />
           <TouchableOpacity
             style={styles.buttonSumbit}
-            onPress={handelAddComent}
+            onPress={() => {
+              handelAddComent;
+            }}
           >
             <AntDesign name="arrowup" size={24} color={"white"} />
           </TouchableOpacity>
@@ -172,9 +184,9 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 10,
     marginBottom: 10,
     padding: 16,
-
+    fontFamily: "Roboto",
     fontSize: 13,
-    fontWeight: "400",
+    fontWeight: "regular",
     color: "#212121",
   },
 });

@@ -12,6 +12,7 @@ import {
   ScrollView,
   Dimensions,
   Animated,
+  Alert,
 } from "react-native";
 import { useDispatch, useSelector } from "react-redux";
 import { authRegisters } from "../../redux/auth/authOperation";
@@ -50,7 +51,10 @@ export const RegistrationScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const handelRegister = () => {
-    const data = { login, email, password };
+    if (login===""|| email=== ""|| showPassword === "") {
+      Alert.alert(`Пройдіть реєстрацію`);
+    } else {
+      const data = { login, email, password };
     dispatch(authRegisters(data))
       .unwrap()
       .then(() => {
@@ -60,6 +64,8 @@ export const RegistrationScreen = ({ navigation }) => {
 
         navigation.navigate("Home", { login, email });
       });
+    }
+    
   };
 
   return (
