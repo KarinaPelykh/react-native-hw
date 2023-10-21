@@ -21,7 +21,7 @@ export const LoginScreen = ({ navigation }) => {
   const [shift, setShift] = useState(false);
   const [position] = useState(new Animated.Value(0));
   const user = useSelector(selectorLogin);
-  console.log("user===>", user.email);
+
   useEffect(() => {
     const listenerShow = Keyboard.addListener("keyboardDidShow", () => {
       setShift(true);

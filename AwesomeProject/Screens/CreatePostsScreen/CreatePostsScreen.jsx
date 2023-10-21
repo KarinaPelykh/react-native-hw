@@ -26,29 +26,13 @@ export const CreatePostsScreen = ({ navigation }) => {
   const [name, setName] = useState("");
   const [adress, setAdress] = useState("");
   const [location, setLocation] = useState(null);
-  console.log("STAtE LOCAION ", location);
-  // console.log("STAtE takeFoto ", takeFoto);
+
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
       await MediaLibrary.requestPermissionsAsync();
       setHasPermission(status === "granted");
     })();
-
-    // (async () => {
-    //   let { status } = await Location.requestForegroundPermissionsAsync();
-    //   if (status !== "granted") {
-    //     console.log("Permission to access location was denied");
-    //   } else {
-    //     let location = await Location.getCurrentPositionAsync({});
-    //     console.log("location===========", location);
-    //     const coords = {
-    //       latitude: location.coords.latitude,
-    //       longitude: location.coords.longitude,
-    //     };
-    //     setLocation(coords);
-    //   }
-    // })();
 
     (async () => {
       await Location.requestForegroundPermissionsAsync();
@@ -96,7 +80,6 @@ export const CreatePostsScreen = ({ navigation }) => {
         };
 
         const docRef = await addDoc(collection(db, "posts"), postData);
-        console.log("Document written with ID: ", docRef.id);
       } else {
         console.error("Failed to upload image. imageUrl is undefined.");
       }

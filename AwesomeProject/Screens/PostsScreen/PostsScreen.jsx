@@ -17,14 +17,6 @@ import { db } from "../../firebase/cofig";
 export const PostsScreen = ({ route, navigation }) => {
   const loginUser = useSelector(selectorLogin);
   const [posts, setPosts] = useState([]);
-  // const [postDatabase, setPostDatebase] = useState([]);
-  console.log("route--->", posts);
-  // console.log("postDatabase",dataname);
-  // useEffect(() => {
-  //   if (route.params) {
-  //     setPost((prevState) => [...prevState, route.params]);
-  //   }
-  // }, [route.params]);
 
   useEffect(() => {
     (async () => {
@@ -116,6 +108,7 @@ export const PostsScreen = ({ route, navigation }) => {
                     navigation.navigate("CommentsScreen", {
                       photo: item.imageUrl,
                       id: item.id,
+                      data: item.data,
                     });
                   }}
                 >

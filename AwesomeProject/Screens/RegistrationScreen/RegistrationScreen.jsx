@@ -51,21 +51,20 @@ export const RegistrationScreen = ({ navigation }) => {
   const dispatch = useDispatch();
 
   const handelRegister = () => {
-    if (login===""|| email=== ""|| showPassword === "") {
+    if (login === "" || email === "" || showPassword === "") {
       Alert.alert(`Пройдіть реєстрацію`);
     } else {
       const data = { login, email, password };
-    dispatch(authRegisters(data))
-      .unwrap()
-      .then(() => {
-        setLogin("");
-        setEmail("");
-        setPassword("");
+      dispatch(authRegisters(data))
+        .unwrap()
+        .then(() => {
+          setLogin("");
+          setEmail("");
+          setPassword("");
 
-        navigation.navigate("Home", { login, email });
-      });
+          navigation.navigate("Home", { login, email });
+        });
     }
-    
   };
 
   return (

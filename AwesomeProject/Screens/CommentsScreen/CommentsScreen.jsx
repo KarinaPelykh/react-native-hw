@@ -16,7 +16,7 @@ import { useRoute } from "@react-navigation/native";
 import { db } from "../../firebase/cofig";
 import { addDoc, collection, doc, onSnapshot } from "firebase/firestore";
 import { nanoid } from "@reduxjs/toolkit";
-import { DataTime } from "../../hooks/DataTime";
+
 export const CommentsScreen = () => {
   const [photo, setPhoto] = useState("");
   const [comment, setComment] = useState("");
@@ -27,13 +27,12 @@ export const CommentsScreen = () => {
     if (rout.params) {
       setPhoto(rout.params.photo);
     }
-    console.log(rout.params.photo);
   }, [rout.params]);
 
   useEffect(() => {
     (async () => {
       const addComment = doc(db, "posts", rout.params.id);
-      console.log("addComment=============", addComment);
+
       onSnapshot(collection(db, "comentar"), (doc) => {
         const comentar = doc.docs
 
@@ -44,25 +43,6 @@ export const CommentsScreen = () => {
       });
     })();
   }, []);
-
-  // const handelAddComent = () => {
-  //   setComments((prevState) => [...prevState, comment]);
-  //   setComment("");
-  // };
-
-  // const handlePost = async () => {
-  //   try {
-  //     const postData = {
-  //       comment,
-  //       date: Date.now(),
-  //     };
-
-  //     const docRef = await addDoc(collection(db, "comentar"), postData);
-  //     console.log("Document written with ID: ", docRef.id);
-  //   } catch (error) {
-  //     console.error("Error handling post: ", error);
-  //   }
-  // };
   const handelAddComent = async () => {
     if (comment === "") {
       return Alert.alert("Додайте коменетар");
@@ -77,9 +57,6 @@ export const CommentsScreen = () => {
         };
 
         const docRef = await addDoc(collection(db, "comentar"), postData);
-        console.log("Document written with ID: ", docRef.id);
-        // setComments((prevState) => [...prevState, comment]);
-
         setComment("");
       } catch (error) {
         console.error("Error handling post: ", error);
@@ -130,7 +107,7 @@ export const CommentsScreen = () => {
           <TouchableOpacity
             style={styles.buttonSumbit}
             onPress={() => {
-              handelAddComent;
+              handelAddComent();
             }}
           >
             <AntDesign name="arrowup" size={24} color={"white"} />
